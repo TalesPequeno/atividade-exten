@@ -7,45 +7,19 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
     use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
     protected $redirectTo = '/home';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -55,18 +29,48 @@ class RegisterController extends Controller
         ]);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
     protected function create(array $data)
     {
         return User::create([
             'name' => $data['name'],
+            'surname' => $data['surname'], // Adicionei o campo surname
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'company_id' => $data['company_id'], // Adicionei o campo company_id
+            'profile_photo' => $data['profile_photo'], // Adicionei o campo profile_photo
         ]);
+    }
+
+    public function register(Request $request)
+    {
+        $validator = $this->validator($request->all());
+
+        $validator->after(function ($validator) use ($request) {
+            $email = $request->input('email');
+            $password = $request->input('password');
+            $password_confirmation = $request->input('password_confirmation');
+
+            if (User::where('email', $email)->exists()) {
+                $validator->errors()->add('custom_email_error', 'O e-mail já está em uso.');
+            }
+
+            if (strlen($password) < 8) {
+                $validator->errors()->add('custom_password_error', 'A senha deve conter no mínimo 8 caracteres.');
+                return;
+            }
+
+            if ($password !== $password_confirmation) {
+                $validator->errors()->add('custom_password_confirm_error', 'As senhas não conferem.');
+                return;
+            }
+        });
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        // Create the user and log them in
+        $this->create($request->all());
+        return redirect($this->redirectTo);
     }
 }

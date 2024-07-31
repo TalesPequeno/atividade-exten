@@ -687,6 +687,7 @@
     "The image could not be loaded": "A imagem não pôde ser carregada",
     "The image could not be loaded.": "A imagem não pôde ser carregada.",
     "The password is incorrect.": "A senha está incorreta.",
+    "The password must be at least 8 characters.": "A senha deve ter pelo menos 8 caracteres.",
     "The provided coupon code is invalid.": "O código de cupom fornecido é inválido.",
     "The provided password does not match your current password.": "A senha informada não corresponde à sua senha atual.",
     "The provided password was incorrect.": "A senha informada está incorreta.",
