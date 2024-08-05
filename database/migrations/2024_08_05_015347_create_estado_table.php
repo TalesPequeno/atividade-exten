@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('nome', 75)->nullable();
             $table->string('uf', 2)->nullable();
-            $table->integer('ibge', false, true)->length(2)->nullable();
+            $table->integer('ibge')->nullable();
             $table->unsignedBigInteger('pais')->nullable();
             $table->string('ddd', 50)->nullable();
             $table->timestamps();

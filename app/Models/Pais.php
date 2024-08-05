@@ -17,4 +17,12 @@ class Pais extends Model
         'sigla',
         'bacen',
     ];
+
+    protected $primaryKey = 'id';
+
+    public function lojas()
+    {
+        return $this->hasMany(Loja::class, 'pais', 'id');
+    }
+
 }

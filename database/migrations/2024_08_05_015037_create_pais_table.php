@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nome', 60)->nullable();
             $table->string('nome_pt', 60)->nullable();
             $table->string('sigla', 2)->nullable();
-            $table->integer('bacen', false, true)->nullable();
+            $table->integer('bacen')->nullable();
             $table->timestamps();
         });
 

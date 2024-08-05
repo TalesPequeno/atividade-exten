@@ -24,4 +24,14 @@ class Loja extends Model
         'estado',
         'pais',
     ];
+
+    public function estado()
+    {
+        return $this->belongsTo(Estado::class, 'estado', 'id');
+    }
+
+    public function pais()
+    {
+        return $this->belongsTo(Pais::class, 'pais', 'id');
+    }
 }

@@ -18,4 +18,17 @@ class Estado extends Model
         'pais',
         'ddd',
     ];
+
+    protected $primaryKey = 'id';
+
+    public function pais()
+    {
+        return $this->belongsTo(Pais::class, 'pais', 'id');
+    }
+
+    public function lojas()
+    {
+        return $this->hasMany(Loja::class, 'estado', 'id');
+    }
+
 }

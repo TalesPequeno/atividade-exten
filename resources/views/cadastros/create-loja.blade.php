@@ -119,6 +119,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var cnpjInput = document.getElementById('cnpj');
     var cepInput = document.getElementById('cep');
     var submitButton = form.querySelector('button[type="submit"]');
+    var estadoSelect = document.getElementById('estado');
+    var estadoInput = document.getElementById('estado_input');
+    var paisSelect = document.getElementById('pais');
 
     function validateCNPJ() {
         var cnpj = cnpjInput.value.replace(/\D/g, '');
@@ -202,7 +205,7 @@ document.getElementById('pais').addEventListener('change', function() {
     var estadoInput = document.getElementById('estado_input');
     var cidadeSelect = document.getElementById('cidade');
     var cidadeInput = document.getElementById('cidade_input');
-    
+
     this.querySelector('option[value=""]').disabled = true;
 
     if (paisId == 1) {
@@ -246,9 +249,9 @@ document.getElementById('estado').addEventListener('change', function() {
     var estadoId = this.value;
     var cidadeSelect = document.getElementById('cidade');
     var cidadeInput = document.getElementById('cidade_input');
-    
+
     this.querySelector('option[value=""]').disabled = true;
-    
+
     cidadeSelect.innerHTML = '<option value="">Selecione a Cidade</option>';
     cidadeSelect.disabled = true;
     cidadeInput.style.display = 'none';

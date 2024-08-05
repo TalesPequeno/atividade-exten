@@ -12,7 +12,7 @@ class LojaController extends Controller
 {
     public function index()
     {
-        $lojas = Loja::paginate(20);
+        $lojas = Loja::with('estado', 'pais')->paginate(10);
         return view('lojas.index', compact('lojas'));
     }
 
@@ -46,9 +46,13 @@ class LojaController extends Controller
         }
     
         $estado = $request->input('estado');
-        if ($request->input('pais') != 1) {
+        if ($request->input('pais') == 1) {
+            $estado = Estado::find($estado)->uf;
+        } else {
             $estado = $request->input('estado_input');
         }
+    
+        $pais = Pais::find($request->input('pais'))->nome_pt;
     
         Loja::create([
             'razao_social' => $validated['razao_social'],
@@ -59,14 +63,13 @@ class LojaController extends Controller
             'numero' => $validated['numero'],
             'complemento' => $validated['complemento'],
             'bairro' => $validated['bairro'],
-            'pais' => $validated['pais'],
+            'pais' => $pais,
             'estado' => $estado,
             'cidade' => $cidade,
         ]);
     
         return redirect()->route('lojas.index')->with('success', 'Loja criada com sucesso.');
-    }
-    
+    }    
 
     public function show($id)
     {
