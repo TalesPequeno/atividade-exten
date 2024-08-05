@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('surname');
             $table->string('password');
             $table->rememberToken();
-            $table->foreignId('company_id')->nullable()->constrained();
+            $table->foreignId('company_id')->nullable()->constrained('companies')->onDelete('cascade');
             $table->string('profile_photo')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

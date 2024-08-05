@@ -24,8 +24,11 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
+            'surname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'company_id' => ['nullable', 'exists:companies,id'],
+            'profile_photo' => ['nullable', 'string', 'max:255'],
         ]);
     }
 
@@ -33,11 +36,11 @@ class RegisterController extends Controller
     {
         return User::create([
             'name' => $data['name'],
-            'surname' => $data['surname'], // Adicionei o campo surname
+            'surname' => $data['surname'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'company_id' => $data['company_id'], // Adicionei o campo company_id
-            'profile_photo' => $data['profile_photo'], // Adicionei o campo profile_photo
+            'company_id' => $data['company_id'] ?? null,
+            'profile_photo' => $data['profile_photo'] ?? null,
         ]);
     }
 
@@ -69,7 +72,6 @@ class RegisterController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        // Create the user and log them in
         $this->create($request->all());
         return redirect($this->redirectTo);
     }
