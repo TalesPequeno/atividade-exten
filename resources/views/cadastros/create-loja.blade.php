@@ -50,18 +50,29 @@
                         <label for="bairro">Bairro</label>
                     </div>
                     <div class="col-md-6 form-floating form-floating-custom mb-3">
-                        <input type="text" class="form-control form-control-custom" id="cidade" name="cidade" required placeholder="Cidade">
-                        <label for="cidade">Cidade</label>
+                        <select class="form-select form-select-custom custom-select-bg" id="pais" name="pais" required>
+                            <option value="">Selecione o País</option>
+                            @foreach($paises as $pais)
+                                <option value="{{ $pais->id }}">{{ $pais->nome_pt }}</option>
+                            @endforeach
+                        </select>
+                        <label for="pais">País</label>
                     </div>
                 </div>
                 <div class="row g-2">
                     <div class="col-md-6 form-floating form-floating-custom mb-3">
-                        <input type="text" class="form-control form-control-custom" id="estado" name="estado" required placeholder="Estado">
+                        <select class="form-select form-select-custom custom-select-bg" id="estado" name="estado" required disabled>
+                            <option value="">Selecione o Estado</option>
+                        </select>
+                        <input type="text" class="form-control form-control-custom" id="estado_input" name="estado_input" placeholder="Estado" style="display: none;">
                         <label for="estado">Estado</label>
                     </div>
                     <div class="col-md-6 form-floating form-floating-custom mb-3">
-                        <input type="text" class="form-control form-control-custom" id="pais" name="pais" required placeholder="País">
-                        <label for="pais">País</label>
+                        <select class="form-select form-select-custom custom-select-bg" id="cidade" name="cidade" required disabled>
+                            <option value="">Selecione a Cidade</option>
+                        </select>
+                        <input type="text" class="form-control form-control-custom" id="cidade_input" name="cidade_input" placeholder="Cidade" style="display: none;">
+                        <label for="cidade">Cidade</label>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center">
@@ -91,4 +102,82 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('pais').addEventListener('change', function() {
+        var paisId = this.value;
+        var estadoSelect = document.getElementById('estado');
+        var estadoInput = document.getElementById('estado_input');
+        var cidadeSelect = document.getElementById('cidade');
+        var cidadeInput = document.getElementById('cidade_input');
+        
+        // Remover a opção "Selecione o País"
+        this.querySelector('option[value=""]').disabled = true;
+
+        if (paisId == 1) { // Se o país selecionado for o Brasil (ID 1)
+            estadoSelect.style.display = 'block';
+            estadoSelect.disabled = true;
+            estadoInput.style.display = 'none';
+            estadoInput.disabled = true;
+            cidadeSelect.style.display = 'block';
+            cidadeSelect.disabled = true;
+            cidadeInput.style.display = 'none';
+            cidadeInput.disabled = true;
+            cidadeSelect.innerHTML = '<option value="">Selecione a Cidade</option>'; // Limpa as opções anteriores
+
+            fetch('/get-estados/' + paisId)
+                .then(response => response.json())
+                .then(data => {
+                    estadoSelect.innerHTML = '<option value="">Selecione o Estado</option>'; // Limpa as opções anteriores
+                    estadoSelect.disabled = false; // Habilita o campo de seleção de estado
+                    data.forEach(estado => {
+                        var option = document.createElement('option');
+                        option.value = estado.id;
+                        option.textContent = estado.nome;
+                        estadoSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Erro:', error));
+        } else {
+            estadoSelect.style.display = 'none';
+            estadoSelect.disabled = true;
+            estadoInput.style.display = 'block';
+            estadoInput.disabled = false;
+            cidadeSelect.style.display = 'none';
+            cidadeSelect.disabled = true;
+            cidadeInput.style.display = 'block';
+            cidadeInput.disabled = false;
+            cidadeSelect.innerHTML = '<option value="">Selecione a Cidade</option>'; // Limpa as opções anteriores
+        }
+    });
+
+    document.getElementById('estado').addEventListener('change', function() {
+        var estadoId = this.value;
+        var cidadeSelect = document.getElementById('cidade');
+        var cidadeInput = document.getElementById('cidade_input');
+        
+        // Remover a opção "Selecione o Estado"
+        this.querySelector('option[value=""]').disabled = true;
+        
+        cidadeSelect.innerHTML = '<option value="">Selecione a Cidade</option>'; // Limpa as opções anteriores
+        cidadeSelect.disabled = true; // Desabilita o campo de seleção de cidade
+        cidadeInput.style.display = 'none';
+        cidadeInput.disabled = true;
+
+        if (estadoId) {
+            fetch('/get-cidades/' + estadoId)
+                .then(response => response.json())
+                .then(data => {
+                    cidadeSelect.disabled = false; // Habilita o campo de seleção de cidade
+                    data.forEach(cidade => {
+                        var option = document.createElement('option');
+                        option.value = cidade.nome;
+                        option.textContent = cidade.nome;
+                        cidadeSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Erro:', error));
+        }
+    });
+</script>
 @endsection

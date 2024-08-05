@@ -13,6 +13,7 @@ body {
 
 .form-control {
     border-left: 0;
+    border-radius: 0 0.25rem 0.25rem 0;
 }
 
 .btn-primary {
@@ -195,11 +196,6 @@ body {
     border-right: 0;
 }
 
-.form-control {
-    border-left: 0;
-    border-radius: 0 0.25rem 0.25rem 0;
-}
-
 .btn-primary {
     background-color: #5867dd;
     border-color: #5867dd;
@@ -228,3 +224,16 @@ body {
 .form-floating-custom label {
     color: #6c757d;
 }
+
+.custom-select-bg {
+    background-color: white !important;
+}
+
+.custom-select-bg option[value=""] {
+    color: #6c757d;
+}
+
+.custom-select-bg:invalid {
+    color: #000000;
+}
+

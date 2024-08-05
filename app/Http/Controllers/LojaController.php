@@ -4,18 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Loja;
+use App\Models\Pais;
 
 class LojaController extends Controller
 {
     public function index()
     {
-        $lojas = Loja::all();
-        return view('lojas.lojas', compact('lojas'));
+        $lojas = Loja::paginate(20);
+        return view('lojas.index', compact('lojas'));
     }
 
     public function create()
     {
-        return view('lojas.create');
+        $paises = Pais::all();
+        return view('lojas.create', compact('paises'));
     }
 
     public function store(Request $request)
@@ -33,7 +35,8 @@ class LojaController extends Controller
     public function edit($id)
     {
         $loja = Loja::findOrFail($id);
-        return view('lojas.edit', compact('loja'));
+        $paises = Pais::all();
+        return view('lojas.edit', compact('loja', 'paises'));
     }
 
     public function update(Request $request, $id)
