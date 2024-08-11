@@ -26,6 +26,7 @@ class CreateLojasTable extends Migration
             $table->string('cidade');
             $table->string('estado');
             $table->string('pais');
+            $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
