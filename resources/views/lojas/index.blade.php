@@ -46,7 +46,10 @@
                         <td>{{ $loja->nome_fantasia }}</td>
                         <td>{{ $loja->cnpj }}</td>
                         <td>
-                            {{ $loja->rua }}, {{ $loja->numero }}{{ $loja->complemento ? ', ' . $loja->complemento : '' }}, {{ $loja->bairro }}, {{ $loja->cep }}, {{ $loja->cidade }}/{{ $loja->estado }} - {{ $loja->pais }}
+                            {{ $loja->rua }}, {{ $loja->numero }}{{ $loja->complemento ? ', ' . $loja->complemento : '' }}, 
+                            {{ $loja->bairro }}, {{ $loja->cep }}, 
+                            {{ mb_strtoupper($loja->cidade, 'UTF-8') }}/{{ $loja->estado }} - 
+                            {{ mb_strtoupper($loja->pais, 'UTF-8') }}
                         </td>
                     </tr>
                     @empty
