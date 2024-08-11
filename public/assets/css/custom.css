@@ -237,3 +237,6 @@ body {
     color: #000000;
 }
 
+input {
+    text-transform: uppercase;
+}
