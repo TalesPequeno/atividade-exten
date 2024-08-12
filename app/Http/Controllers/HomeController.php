@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Company;
 
 class HomeController extends Controller
 {
@@ -23,6 +24,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $user = auth()->user();
+
+        // Busca a companhia associada ao usuário logado
+        $company = Company::where('id', $user->company_id)->first();
+
+        // Passa a variável $company para a view home.blade.php
+        return view('home', compact('company'));
     }
 }
